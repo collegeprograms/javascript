@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Programs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 860px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #fff;
+      color: #111;
+    }
+    h1 {
+      font-size: 22px;
+      border-bottom: 2px solid #111;
+      padding-bottom: 8px;
+      margin-bottom: 30px;
+    }
+    .program {
+      margin-bottom: 36px;
+    }
+    .program-header {
+      background: #f0f0f0;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .file-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e8e8e8;
+      padding: 5px 12px;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      font-size: 13px;
+    }
+    .single-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f0f0f0;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-bottom: none;
+    }
+    .single-title {
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .copy-btn {
+      font-size: 12px;
+      padding: 4px 12px;
+      cursor: pointer;
+      background: #fff;
+      border: 1px solid #999;
+    }
+    .copy-btn:hover {
+      background: #e0e0e0;
+    }
+    pre {
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 0 0 4px 0;
+      font-family: "Courier New", monospace;
+      white-space: pre;
+    }
+    pre:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<h1>JavaScript Programs</h1>
+<div id="container"></div>
+
+<script>
+const programs = [
+  {
+    title: "1. Perfect / Abundant / Deficient Number",
+    code: "<html>\n<body>\n<script>\nlet num = parseInt(prompt(\"Enter a number:\"));\nlet sum = 0;\nfor (let i = 1; i <= num / 2; i++) {\n  if (num % i === 0) sum += i;\n}\nif (sum === num) {\n  alert(\"Perfect Number\");\n} else if (sum > num) {\n  alert(\"Abundant Number\");\n} else {\n  alert(\"Deficient Number\");\n}\n<\/script>\n</body>\n</html>"
+  },
+  {
+    title: "2. Multiplication Table",
+    code: "<html>\n<body>\n<input type=\"number\" id=\"num\" placeholder=\"Number\">\n<input type=\"number\" id=\"limit\" placeholder=\"Limit\">\n<div id=\"result\"></div>\n<button onclick=\"table()\">Show Table</button>\n<script>\nfunction table() {\n  let n = parseInt(document.getElementById(\"num\").value);\n  let l = parseInt(document.getElementById(\"limit\").value);\n  let out = \"\";\n  for (let i = 1; i <= l; i++) {\n    out += n + \" x \" + i + \" = \" + (n * i) + \"<br>\";\n  }\n  document.getElementById(\"result\").innerHTML = out;\n}\n<\/script>\n</body>\n</html>"
+  },
+  {
+    title: "3. Background Color Changer",
+    code: "<html>\n<body>\n<button onclick=\"changeColor()\">Change Background</button>\n<script>\nlet colors = [\"red\", \"green\", \"blue\", \"yellow\", \"pink\"];\nlet i = 0;\nfunction changeColor() {\n  document.body.style.backgroundColor = colors[i];\n  i = (i + 1) % colors.length;\n}\n<\/script>\n</body>\n</html>"
+  },
+  {
+    title: "4. Focus and Blur Input Styling",
+    code: "<html>\n<body>\n<input type=\"text\"\n  onfocus=\"focusFun(this)\"\n  onblur=\"blurFun(this)\"\n  placeholder=\"Enter text\">\n<script>\nfunction focusFun(x) {\n  x.style.background = \"yellow\";\n  x.style.color = \"red\";\n}\nfunction blurFun(x) {\n  x.style.background = \"white\";\n  x.style.color = \"black\";\n}\n<\/script>\n</body>\n</html>"
+  },
+  {
+    title: "5. Show Current Date and Time",
+    code: "<html>\n<body>\n<button onclick=\"showDate()\">Show Date & Time</button>\n<p id=\"dt\"></p>\n<script>\nfunction showDate() {\n  let now = new Date();\n  document.getElementById(\"dt\").innerHTML = now;\n}\n<\/script>\n</body>\n</html>"
+  },
+  {
+    title: "6. Number, Square and Cube Table",
+    code: "<!DOCTYPE html>\n<html>\n<body>\n<table border=\"1\">\n  <tr>\n    <th>Number</th>\n    <th>Square</th>\n    <th>Cube</th>\n  </tr>\n  <script>\n  for (let i = 0; i <= 10; i++) {\n    document.write(\"<tr>\");\n    document.write(\"<td>\" + i + \"</td>\");\n    document.write(\"<td>\" + (i * i) + \"</td>\");\n    document.write(\"<td>\" + (i * i * i) + \"</td>\");\n    document.write(\"</tr>\");\n  }\n  <\/script>\n</table>\n</body>\n</html>"
+  },
+  {
+    title: "7. Form Validation",
+    files: [
+      {
+        filename: "index.html",
+        code: "<html>\n<body>\n<form onsubmit=\"return validate()\">\n  Name: <input type=\"text\" id=\"name\"><br>\n  Email: <input type=\"text\" id=\"email\"><br>\n  Age: <input type=\"number\" id=\"age\"><br>\n  <button type=\"submit\">Submit</button>\n</form>\n<script src=\"validate.js\"><\/script>\n</body>\n</html>"
+      },
+      {
+        filename: "validate.js",
+        code: "function validate() {\n  let name = document.getElementById(\"name\").value;\n  let email = document.getElementById(\"email\").value;\n  let age = document.getElementById(\"age\").value;\n  if (name === \"\") {\n    alert(\"Name required\");\n    return false;\n  }\n  if (!email.includes(\"@\")) {\n    alert(\"Invalid Email\");\n    return false;\n  }\n  if (age < 18) {\n    alert(\"Age must be 18+\");\n    return false;\n  }\n  alert(\"Form submitted successfully\");\n  return true;\n}"
+      }
+    ]
+  },
+  {
+    title: "8. Basic Calculator",
+    code: "<html>\n<body>\n<input id=\"a\" type=\"number\">\n<input id=\"b\" type=\"number\"><br>\n<button onclick=\"calc('+')\">+</button>\n<button onclick=\"calc('-')\">-</button>\n<button onclick=\"calc('*')\">*</button>\n<button onclick=\"calc('/')\">\/</button>\n<p id=\"res\"></p>\n<script>\nfunction calc(op) {\n  let x = parseFloat(a.value);\n  let y = parseFloat(b.value);\n  let r;\n  if (op === '+') r = x + y;\n  if (op === '-') r = x - y;\n  if (op === '*') r = x * y;\n  if (op === '/') r = x / y;\n  res.innerHTML = \"Result: \" + r;\n}\n<\/script>\n</body>\n</html>"
+  },
+  {
+    title: "9. Factorial Calculator",
+    code: "<html>\n<body>\n<input type=\"number\" id=\"n\">\n<button onclick=\"fact()\">Factorial</button>\n<p id=\"ans\"></p>\n<script>\nfunction fact() {\n  let num = parseInt(n.value);\n  let f = 1;\n  for (let i = 1; i <= num; i++) {\n    f *= i;\n  }\n  ans.innerHTML = \"Factorial = \" + f;\n}\n<\/script>\n</body>\n</html>"
+  },
+  {
+    title: "10. IP Address Validator",
+    code: "<html>\n<body>\n<input type=\"text\" id=\"ip\" placeholder=\"Enter IP\">\n<button onclick=\"checkIP()\">Check</button>\n<p id=\"out\"></p>\n<script>\nfunction checkIP() {\n  let ip = document.getElementById(\"ip\").value;\n  let regex = /^(\\d{1,3}\\.){3}\\d{1,3}$/;\n  if (regex.test(ip)) {\n    out.innerHTML = \"Valid IP Address\";\n  } else {\n    out.innerHTML = \"Invalid IP Address\";\n  }\n}\n<\/script>\n</body>\n</html>"
+  }
+];
+
+const container = document.getElementById("container");
+
+programs.forEach(function(p, idx) {
+  const div = document.createElement("div");
+  div.className = "program";
+
+  if (p.files) {
+    let html = '<div class="program-header">' + p.title + '</div>';
+    p.files.forEach(function(f, fi) {
+      html +=
+        '<div class="file-header">' +
+          '<span>' + f.filename + '</span>' +
+          '<button class="copy-btn" onclick="copyText(\'' + idx + '_' + fi + '\', this)">Copy</button>' +
+        '</div>' +
+        '<pre id="code-' + idx + '_' + fi + '">' + escapeHtml(f.code) + '</pre>';
+    });
+    div.innerHTML = html;
+  } else {
+    div.innerHTML =
+      '<div class="single-header">' +
+        '<span class="single-title">' + p.title + '</span>' +
+        '<button class="copy-btn" onclick="copyText(\'' + idx + '\', this)">Copy</button>' +
+      '</div>' +
+      '<pre id="code-' + idx + '">' + escapeHtml(p.code) + '</pre>';
+  }
+
+  container.appendChild(div);
+});
+
+const codeMap = {};
+programs.forEach(function(p, idx) {
+  if (p.files) {
+    p.files.forEach(function(f, fi) {
+      codeMap[idx + '_' + fi] = f.code;
+    });
+  } else {
+    codeMap[idx] = p.code;
+  }
+});
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function copyText(key, btn) {
+  navigator.clipboard.writeText(codeMap[key]).then(function() {
+    btn.textContent = "Copied";
+    setTimeout(function() { btn.textContent = "Copy"; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
