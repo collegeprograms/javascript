@@ -53,14 +53,18 @@
       font-weight: bold;
       font-size: 14px;
     }
-    .copy-btn {
+    .btn-group {
+      display: flex;
+      gap: 6px;
+    }
+    .copy-btn, .toggle-btn {
       font-size: 12px;
       padding: 4px 12px;
       cursor: pointer;
       background: #fff;
       border: 1px solid #999;
     }
-    .copy-btn:hover {
+    .copy-btn:hover, .toggle-btn:hover {
       background: #e0e0e0;
     }
     pre {
@@ -74,8 +78,22 @@
       font-family: "Courier New", monospace;
       white-space: pre;
     }
-    pre:last-child {
-      margin-bottom: 0;
+    .output-frame {
+      display: none;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-top: none;
+      background: #fff;
+      box-sizing: border-box;
+    }
+    .output-label {
+      display: none;
+      background: #fff8dc;
+      border: 1px solid #ccc;
+      border-top: none;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: #555;
     }
   </style>
 </head>
@@ -121,7 +139,8 @@ const programs = [
         filename: "validate.js",
         code: "function validate() {\n  let name = document.getElementById(\"name\").value;\n  let email = document.getElementById(\"email\").value;\n  let age = document.getElementById(\"age\").value;\n  if (name === \"\") {\n    alert(\"Name required\");\n    return false;\n  }\n  if (!email.includes(\"@\")) {\n    alert(\"Invalid Email\");\n    return false;\n  }\n  if (age < 18) {\n    alert(\"Age must be 18+\");\n    return false;\n  }\n  alert(\"Form submitted successfully\");\n  return true;\n}"
       }
-    ]
+    ],
+    preview: "<html>\n<body>\n<form onsubmit=\"return validate()\">\n  Name: <input type=\"text\" id=\"name\"><br>\n  Email: <input type=\"text\" id=\"email\"><br>\n  Age: <input type=\"number\" id=\"age\"><br>\n  <button type=\"submit\">Submit</button>\n</form>\n<script>\nfunction validate() {\n  let name = document.getElementById(\"name\").value;\n  let email = document.getElementById(\"email\").value;\n  let age = document.getElementById(\"age\").value;\n  if (name === \"\") { alert(\"Name required\"); return false; }\n  if (!email.includes(\"@\")) { alert(\"Invalid Email\"); return false; }\n  if (age < 18) { alert(\"Age must be 18+\"); return false; }\n  alert(\"Form submitted successfully\");\n  return true;\n}\n<\/script>\n</body>\n</html>"
   },
   {
     title: "8. Basic Calculator",
@@ -143,6 +162,8 @@ programs.forEach(function(p, idx) {
   const div = document.createElement("div");
   div.className = "program";
 
+  const previewCode = p.preview || p.code;
+
   if (p.files) {
     let html = '<div class="program-header">' + p.title + '</div>';
     p.files.forEach(function(f, fi) {
@@ -151,29 +172,43 @@ programs.forEach(function(p, idx) {
           '<span>' + f.filename + '</span>' +
           '<button class="copy-btn" onclick="copyText(\'' + idx + '_' + fi + '\', this)">Copy</button>' +
         '</div>' +
-        '<pre id="code-' + idx + '_' + fi + '">' + escapeHtml(f.code) + '</pre>';
+        '<pre>' + escapeHtml(f.code) + '</pre>';
     });
+    html +=
+      '<div class="output-label" id="label-' + idx + '">Output Preview</div>' +
+      '<iframe class="output-frame" id="frame-' + idx + '" sandbox="allow-scripts allow-modals" height="160"></iframe>' +
+      '<div style="border:1px solid #ccc;border-top:none;padding:6px 12px;background:#f0f0f0;">' +
+        '<button class="toggle-btn" onclick="toggleOutput(' + idx + ', this)">Show Output</button>' +
+      '</div>';
     div.innerHTML = html;
   } else {
     div.innerHTML =
       '<div class="single-header">' +
         '<span class="single-title">' + p.title + '</span>' +
-        '<button class="copy-btn" onclick="copyText(\'' + idx + '\', this)">Copy</button>' +
+        '<div class="btn-group">' +
+          '<button class="copy-btn" onclick="copyText(\'' + idx + '\', this)">Copy</button>' +
+          '<button class="toggle-btn" onclick="toggleOutput(' + idx + ', this)">Show Output</button>' +
+        '</div>' +
       '</div>' +
-      '<pre id="code-' + idx + '">' + escapeHtml(p.code) + '</pre>';
+      '<pre>' + escapeHtml(p.code) + '</pre>' +
+      '<div class="output-label" id="label-' + idx + '">Output Preview</div>' +
+      '<iframe class="output-frame" id="frame-' + idx + '" sandbox="allow-scripts allow-modals" height="160"></iframe>';
   }
 
   container.appendChild(div);
 });
 
 const codeMap = {};
+const previewMap = {};
 programs.forEach(function(p, idx) {
   if (p.files) {
     p.files.forEach(function(f, fi) {
       codeMap[idx + '_' + fi] = f.code;
     });
+    previewMap[idx] = p.preview;
   } else {
     codeMap[idx] = p.code;
+    previewMap[idx] = p.code;
   }
 });
 
@@ -189,6 +224,23 @@ function copyText(key, btn) {
     btn.textContent = "Copied";
     setTimeout(function() { btn.textContent = "Copy"; }, 2000);
   });
+}
+
+function toggleOutput(idx, btn) {
+  const frame = document.getElementById("frame-" + idx);
+  const label = document.getElementById("label-" + idx);
+  const visible = frame.style.display === "block";
+  if (visible) {
+    frame.style.display = "none";
+    label.style.display = "none";
+    frame.srcdoc = "";
+    btn.textContent = "Show Output";
+  } else {
+    frame.style.display = "block";
+    label.style.display = "block";
+    frame.srcdoc = previewMap[idx];
+    btn.textContent = "Hide Output";
+  }
 }
 </script>
 </body>
